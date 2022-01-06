@@ -4,12 +4,12 @@ defmodule TransBot do
   """
 
   alias BalalaikaBear.Longpoll.GroupLongpoll, as: Longpoll
-  alias BalalaikaBear, as: VK
   alias RolePlay, as: RP
   require Logger
 
   @token System.get_env("TRANSBOT_TOKEN")
   @group_id System.get_env("TRANSBOT_ID")
+  @start System.os_time()
 
   @spec main(any) :: any
   def main(_args) do
@@ -32,7 +32,6 @@ defmodule TransBot do
   defp loop() do
     receive do
       {:ok, response} ->
-        IO.inspect(response)
         [update | _] = response["updates"]
         Logger.info("Got new event of type \"#{update["type"]}\"")
         process_event(update["type"], update["object"])
@@ -65,35 +64,35 @@ defmodule TransBot do
     text = message["text"] |> String.downcase()
     reply = message["reply_message"]
 
-    case text do
-      "!трап" ->
-        Logger.info("Sending random trap picture")
-        Commands.random_trap(peer_id, @token, @group_id)
+    if is_map(reply) and Enum.member?(RP.rp_actions(), text) and reply["from_id"] > 0 do
+      Logger.info("Doing a RP action")
+      RP.rp_action(text, message, @token, @group_id)
+    else
+      case text do
+        "!трап" ->
+          Logger.info("Sending random trap picture")
+          Commands.random_trap(peer_id, @token, @group_id)
 
-      _ ->
-        if is_map(reply) and Enum.member?(RP.rp_actions(), text) and reply["from_id"] > 0 do
-          Logger.info("Doing a RP action")
-          RP.rp_action(text, message, @token, @group_id)
-        end
+        "!аптайм" ->
+          Logger.info("Sending bot uptime")
+          Commands.uptime(peer_id, @start, @token)
+
+        "!ку" ->
+          Logger.info("Sending greeting sticker")
+          Commands.greet(peer_id, @token)
+
+        _ ->
+          nil
+      end
     end
   end
 
   # If message from messenger
   defp process_message(_from_id, peer_id, _message) do
-    result =
-      VK.Messages.send(%{
-        peer_id: peer_id,
-        random_id: Enum.random(0..(2 ** 64)),
-        message: "личька",
-        access_token: @token
-      })
-
-    case result do
-      {:ok, message_id} ->
-        Logger.info("Successfully sent message to #{peer_id} with id #{message_id}")
-
-      {_, error} ->
-        Logger.error("Message was not sent: #{inspect(error)}")
-    end
+    APIWrapper.send_message(
+      peer_id,
+      @token,
+      message: "личька"
+    )
   end
 end
