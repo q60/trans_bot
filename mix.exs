@@ -25,7 +25,7 @@ defmodule TransBot.MixProject do
   defp deps do
     [
       {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
-      {:balalaika_bear, path: "~/Drafts/Elixir/balalaika_bear"},
+      {:balalaika_bear, git: "https://github.com/q60/balalaika_bear"},
       {:ecto, "~> 3.7"}
     ]
   end
