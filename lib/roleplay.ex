@@ -30,22 +30,12 @@ defmodule RolePlay do
     action_text = "[id#{firstp}|#{firstp_name}] #{action} [id#{secondp}|#{secondp_name}]"
     Logger.info("Action: #{action_text}")
 
-    result =
-      VK.Messages.send(%{
-        peer_id: peer_id,
-        random_id: Enum.random(0..(2 ** 64)),
-        message: action_text,
-        attachment: action_picture(text, firstp_gender, secondp_gender, group_id),
-        access_token: token
-      })
-
-    case result do
-      {:ok, _} ->
-        Logger.info("Successfully sent message to #{peer_id}")
-
-      {_, error} ->
-        Logger.error("Message was not sent: #{inspect(error)}")
-    end
+    APIWrapper.send_message(
+      peer_id,
+      token,
+      message: action_text,
+      attachment: action_picture(text, firstp_gender, secondp_gender, group_id)
+    )
   end
 
   defp person_info(id, token, name_case \\ "nom") do

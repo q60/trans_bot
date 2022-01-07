@@ -4,7 +4,7 @@ defmodule TransBot.MixProject do
   def project do
     [
       app: :trans_bot,
-      version: "0.6.0",
+      version: "0.8.0",
       elixir: "~> 1.13",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
@@ -25,7 +25,8 @@ defmodule TransBot.MixProject do
   defp deps do
     [
       {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
-      {:balalaika_bear, path: "~/Drafts/Elixir/balalaika_bear"}
+      {:balalaika_bear, path: "~/Drafts/Elixir/balalaika_bear"},
+      {:ecto, "~> 3.7"}
     ]
   end
 end

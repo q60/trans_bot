@@ -1,6 +1,6 @@
 defmodule Commands do
   @moduledoc """
-  Misc bot commands.
+  Bot commands.
   """
 
   require Logger
@@ -63,6 +63,30 @@ defmodule Commands do
       peer_id,
       token,
       sticker_id: sticker
+    )
+  end
+
+  @doc """
+  Send shrug.
+  """
+  @spec shrug(integer(), any()) :: :ok
+  def shrug(peer_id, token) do
+    APIWrapper.send_message(
+      peer_id,
+      token,
+      message: ~S"¯\_(ツ)_/¯"
+    )
+  end
+
+  @doc """
+  Send Elixir and OTP versions.
+  """
+  @spec version(integer(), any()) :: :ok
+  def version(peer_id, token) do
+    APIWrapper.send_message(
+      peer_id,
+      token,
+      message: "Erlang/OTP #{System.otp_release()}, Elixir #{System.version()}"
     )
   end
 end

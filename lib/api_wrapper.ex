@@ -9,7 +9,11 @@ defmodule APIWrapper do
   @doc """
   Wrapper for messages.send
   """
-  @spec send_message(integer(), any(), [message: String.t(), attachment: String.t(), sticker_id: String.t()]) :: :ok
+  @spec send_message(integer(), any(),
+          message: String.t(),
+          attachment: String.t(),
+          sticker_id: String.t()
+        ) :: :ok
   def send_message(peer_id, token, options \\ []) do
     defaults = [
       message: "",

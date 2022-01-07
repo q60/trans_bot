@@ -20,7 +20,7 @@ defmodule TransBot do
       spawn(
         Longpoll,
         :init,
-        [parent, %{group_id: @group_id, access_token: @token, v: 5.131}]
+        [parent, %{access_token: @token, group_id: @group_id, v: 5.131}]
       )
 
     Logger.info("Spawned longpoll #{inspect(pid)} from parent #{inspect(parent)}")
@@ -32,12 +32,13 @@ defmodule TransBot do
   defp loop() do
     receive do
       {:ok, response} ->
-        [update | _] = response["updates"]
-        Logger.info("Got new event of type \"#{update["type"]}\"")
-        process_event(update["type"], update["object"])
+        updates = response["updates"]
 
-      _ ->
-        nil
+        unless updates == nil do
+          [update | _] = response["updates"]
+          Logger.info("Got new event of type \"#{update["type"]}\"")
+          process_event(update["type"], update["object"])
+        end
     end
 
     loop()
@@ -80,6 +81,14 @@ defmodule TransBot do
         "!ку" ->
           Logger.info("Sending greeting sticker")
           Commands.greet(peer_id, @token)
+
+        "!shrug" ->
+          Logger.info("Sending shrug")
+          Commands.shrug(peer_id, @token)
+
+        "!v" ->
+          Logger.info("Sending versions")
+          Commands.version(peer_id, @token)
 
         _ ->
           nil
