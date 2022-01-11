@@ -10,7 +10,7 @@ defmodule TransBot do
 
   @token Application.fetch_env!(:trans_bot, :token)
   @group_id Application.fetch_env!(:trans_bot, :group_id)
-  @start System.os_time(:microsecond)
+  @start System.os_time(:second)
 
   @spec main(any) :: any
   def main(_args) do
