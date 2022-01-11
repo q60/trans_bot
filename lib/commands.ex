@@ -24,13 +24,14 @@ defmodule Commands do
   @spec uptime(integer(), integer(), any()) :: :ok
   def uptime(peer_id, start, token) do
     uptime =
-      ((System.os_time() - start) / 1_000_000_000)
-      |> round()
+      ~T[00:00:00.000]
+      |> Time.add(System.os_time(:microsecond) - start, :microsecond)
+      |> Time.to_string()
 
     APIWrapper.send_message(
       peer_id,
       token,
-      message: "#{uptime} секунд"
+      message: "#{uptime}"
     )
   end
 
