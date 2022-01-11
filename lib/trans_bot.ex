@@ -6,9 +6,10 @@ defmodule TransBot do
   alias BalalaikaBear.Longpoll.GroupLongpoll, as: Longpoll
   alias RolePlay, as: RP
   require Logger
+  use Macros
 
-  @token System.get_env("TRANSBOT_TOKEN")
-  @group_id System.get_env("TRANSBOT_ID")
+  @token Application.fetch_env!(:trans_bot, :token)
+  @group_id Application.fetch_env!(:trans_bot, :group_id)
   @start System.os_time()
 
   @spec main(any) :: any
@@ -69,39 +70,42 @@ defmodule TransBot do
       Logger.info("Doing a RP action")
       RP.rp_action(text, message, @token, @group_id)
     else
-      case text do
-        "!трап" ->
-          Logger.info("Sending random trap picture")
-          Commands.random_trap(peer_id, @token, @group_id)
+      command ["трап", "trap", "арт"] do
+        Commands.random_trap(peer_id, @token, @group_id)
+      end
 
-        "!аптайм" ->
-          Logger.info("Sending bot uptime")
-          Commands.uptime(peer_id, @start, @token)
+      command ["аптайм", "uptime"] do
+        Commands.uptime(peer_id, @start, @token)
+      end
 
-        "!ку" ->
-          Logger.info("Sending greeting sticker")
-          Commands.greet(peer_id, @token)
+      command "ку" do
+        Commands.greet(peer_id, @token)
+      end
 
-        "!shrug" ->
-          Logger.info("Sending shrug")
-          Commands.shrug(peer_id, @token)
+      command "shrug" do
+        Commands.shrug(peer_id, @token)
+      end
 
-        "!v" ->
-          Logger.info("Sending versions")
-          Commands.version(peer_id, @token)
-
-        _ ->
-          nil
+      command "v" do
+        Commands.version(peer_id, @token)
       end
     end
   end
 
   # If message from messenger
-  defp process_message(_from_id, peer_id, _message) do
-    APIWrapper.send_message(
-      peer_id,
-      @token,
-      message: "личька"
-    )
+  defp process_message(_from_id, peer_id, message) do
+    text = message["text"] |> String.downcase()
+
+    command ["трап", "trap", "арт"] do
+      Commands.random_trap(peer_id, @token, @group_id)
+    end
+
+    command ["аптайм", "uptime"] do
+      Commands.uptime(peer_id, @start, @token)
+    end
+
+    command "v" do
+      Commands.version(peer_id, @token)
+    end
   end
 end
