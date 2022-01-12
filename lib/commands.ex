@@ -23,6 +23,7 @@ defmodule Commands do
   """
   @spec uptime(integer(), integer(), any()) :: :ok
   def uptime(peer_id, start, token) do
+<<<<<<< HEAD
     uptime =
       ~T[00:00:00.000]
       |> Time.add(System.os_time(:second) - start, :second)
@@ -36,14 +37,52 @@ defmodule Commands do
           m: [true: "minutes", false: "minute"][m == 0 or m > 1],
           s: [true: "seconds", false: "second"][s == 0 or s > 1]
         ]
+=======
+    uptime = System.os_time(:second) - start
+>>>>>>> 972a6fd9c15d1fb08f2e20c2d54f9fc607be09dd
 
-        "#{h} #{words[:h]}, #{m} #{words[:m]}, #{s} #{words[:s]}"
-      end)
+    %{w: w, d: d, h: h, m: m, s: s} = %{
+      w:
+        [
+          true: uptime / 604_800,
+          false: nil
+        ][uptime >= 604_800],
+      d:
+        [
+          true: div(rem(uptime, 604_800), 86400),
+          false: nil
+        ][div(rem(uptime, 604_800), 86400) > 0],
+      h:
+        [
+          true: div(rem(uptime, 86400), 3600),
+          false: nil
+        ][div(rem(uptime, 86400), 3600) > 0],
+      m:
+        [
+          true: div(rem(uptime, 3600), 60),
+          false: nil
+        ][div(rem(uptime, 3600), 60) > 0],
+      s:
+        [
+          true: rem(uptime, 60),
+          false: nil
+        ][rem(uptime, 60) > 0]
+    }
+
+    uptime_string =
+      [
+        w && ((w > 1 && "#{w} weeks") || "1 week"),
+        d && ((d > 1 && "#{d} days") || "1 day"),
+        h && ((h > 1 && "#{h} hours") || "1 hour"),
+        m && ((m > 1 && "#{m} minutes") || "1 minute"),
+        s && ((s > 1 && "#{s} seconds") || "1 second")
+      ]
+      |> Enum.join(" ")
 
     APIWrapper.send_message(
       peer_id,
       token,
-      message: "#{uptime}"
+      message: uptime_string
     )
   end
 
