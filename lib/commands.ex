@@ -32,9 +32,9 @@ defmodule Commands do
       |> Enum.map(&String.to_integer/1)
       |> then(fn [h, m, s] ->
         words = [
-          h: [true: "hours", false: "hour"][rem(h, 2) == 0],
-          m: [true: "minutes", false: "minute"][rem(m, 2) == 0],
-          s: [true: "seconds", false: "second"][rem(s, 2) == 0]
+          h: [true: "hours", false: "hour"][h == 0 or h > 1],
+          m: [true: "minutes", false: "minute"][m == 0 or m > 1],
+          s: [true: "seconds", false: "second"][s == 0 or s > 1]
         ]
 
         "#{h} #{words[:h]}, #{m} #{words[:m]}, #{s} #{words[:s]}"
