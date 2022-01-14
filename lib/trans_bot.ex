@@ -37,8 +37,11 @@ defmodule TransBot do
 
         unless updates == nil do
           [update | _] = response["updates"]
-          Logger.info("Got new event of type \"#{update["type"]}\"")
-          process_event(update["type"], update["object"])
+
+          Task.start(fn ->
+            Logger.info("Got new event of type \"#{update["type"]}\"")
+            process_event(update["type"], update["object"])
+          end)
         end
     end
 
