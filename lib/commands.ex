@@ -131,6 +131,24 @@ defmodule Commands do
   end
 
   @doc """
+  Desu desu desu.
+  """
+  @spec desu(integer(), any(), any()) :: :ok
+  def desu(peer_id, token, group_id) do
+    desu_desu =
+      Enum.random(["desu", "десу"])
+      |> List.duplicate(Enum.random(1..5))
+      |> Enum.join(" ")
+
+    APIWrapper.send_message(
+      peer_id,
+      token,
+      message: desu_desu,
+      attachment: "photo-#{group_id}_457239151"
+    )
+  end
+
+  @doc """
   Send Elixir and OTP versions.
   """
   @spec version(integer(), any()) :: :ok

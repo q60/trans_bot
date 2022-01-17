@@ -89,6 +89,10 @@ defmodule TransBot do
         Commands.shrug(peer_id, @token)
       end
 
+      command ["десу", "desu"] do
+        Commands.desu(peer_id, @token, @group_id)
+      end
+
       command "v" do
         Commands.version(peer_id, @token)
       end
@@ -105,6 +109,10 @@ defmodule TransBot do
 
     command ["аптайм", "uptime"] do
       Commands.uptime(peer_id, @start, @token)
+    end
+
+    command ["десу", "desu"] do
+      Commands.desu(peer_id, @token, @group_id)
     end
 
     command "v" do

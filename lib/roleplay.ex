@@ -76,7 +76,7 @@ defmodule RolePlay do
     case {firstp, secondp} do
       {1, 1} ->
         %{
-          "поцеловать" => "photo-#{group_id}_457239031",
+          "поцеловать" => "photo-#{group_id}_457239#{Enum.random(149..150)}",
           "обнять" => "photo-#{group_id}_457239032",
           "лизь" => "photo-#{group_id}_457239033",
           "кусь" => "photo-#{group_id}_457239034"
