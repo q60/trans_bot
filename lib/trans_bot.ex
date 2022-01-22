@@ -73,6 +73,10 @@ defmodule TransBot do
       Logger.info("Doing a RP action")
       RP.rp_action(text, message, @token, @group_id)
     else
+      command ["помощь", "help"] do
+        Commands.help(peer_id, @token, :chat)
+      end
+
       command ["трап", "trap", "арт"] do
         Commands.random_trap(peer_id, @token, @group_id)
       end
@@ -102,6 +106,10 @@ defmodule TransBot do
   # If message from messenger
   defp process_message(_from_id, peer_id, message) do
     text = message["text"] |> String.downcase()
+
+    command ["помощь", "help"] do
+      Commands.help(peer_id, @token, :im)
+    end
 
     command ["трап", "trap", "арт"] do
       Commands.random_trap(peer_id, @token, @group_id)
