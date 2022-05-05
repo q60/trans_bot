@@ -26,7 +26,6 @@ defmodule TransBot.MixProject do
     [
       {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
       {:balalaika_bear, git: "https://github.com/q60/balalaika_bear"},
-      {:ecto, "~> 3.7"}
     ]
   end
 end
