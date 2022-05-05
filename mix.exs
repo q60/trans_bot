@@ -4,7 +4,7 @@ defmodule TransBot.MixProject do
   def project do
     [
       app: :trans_bot,
-      version: "0.9.6",
+      version: "0.9.7",
       elixir: "~> 1.13",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
