@@ -77,8 +77,8 @@ defmodule TransBot do
         Commands.help(peer_id, @token, :chat)
       end
 
-      command ["трап", "trap", "арт"] do
-        Commands.random_trap(peer_id, @token, @group_id)
+      command ["арт", "art"] do
+        Commands.random_art(peer_id, @token, @group_id)
       end
 
       command ["аптайм", "uptime"] do
@@ -111,8 +111,8 @@ defmodule TransBot do
       Commands.help(peer_id, @token, :im)
     end
 
-    command ["трап", "trap", "арт"] do
-      Commands.random_trap(peer_id, @token, @group_id)
+    command ["арт", "art"] do
+      Commands.random_art(peer_id, @token, @group_id)
     end
 
     command ["аптайм", "uptime"] do
