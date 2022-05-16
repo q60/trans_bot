@@ -93,23 +93,7 @@ defmodule Commands do
   """
   @spec uptime(integer(), integer(), any()) :: :ok
   def uptime(peer_id, start, token) do
-<<<<<<< HEAD
-    uptime =
-      ~T[00:00:00.000]
-      |> Time.add(System.os_time(:second) - start, :second)
-      |> Time.truncate(:second)
-      |> Time.to_string()
-      |> String.split(":")
-      |> Enum.map(&String.to_integer/1)
-      |> then(fn [h, m, s] ->
-        words = [
-          h: [true: "hours", false: "hour"][h == 0 or h > 1],
-          m: [true: "minutes", false: "minute"][m == 0 or m > 1],
-          s: [true: "seconds", false: "second"][s == 0 or s > 1]
-        ]
-=======
     uptime = System.os_time(:second) - start
->>>>>>> 972a6fd9c15d1fb08f2e20c2d54f9fc607be09dd
 
     %{w: w, d: d, h: h, m: m, s: s} = %{
       w:
