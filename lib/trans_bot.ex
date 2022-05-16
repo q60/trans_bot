@@ -67,11 +67,21 @@ defmodule TransBot do
   # If message from chat
   defp process_message(from_id, peer_id, message) when from_id != peer_id do
     text = message["text"] |> String.downcase()
-    reply = message["reply_message"]
+    [reply | _] =
+      if message["fwd_messages"] != [] do
+        message["fwd_messages"]
+      else
+        [message["reply_message"]]
+      end
 
     if is_map(reply) and Enum.member?(RP.rp_actions(), text) and reply["from_id"] > 0 do
       Logger.info("Doing a RP action")
-      RP.rp_action(text, message, @token, @group_id)
+
+      peer_id = message["peer_id"]
+      first_person = message["from_id"]
+      second_person = reply["from_id"]
+
+      RP.rp_action(text, peer_id, first_person, second_person, @token, @group_id)
     else
       command ["помощь", "help"] do
         Commands.help(peer_id, @token, :chat)

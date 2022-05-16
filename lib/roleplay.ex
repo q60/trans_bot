@@ -15,12 +15,8 @@ defmodule RolePlay do
   @doc """
   RolePlay action. Sends RP message to recipient.
   """
-  @spec rp_action(<<_::64, _::_*32>>, map(), any(), any()) :: :ok
-  def rp_action(text, message, token, group_id) do
-    firstp = message["from_id"]
-    secondp = message["reply_message"]["from_id"]
-    peer_id = message["peer_id"]
-
+  @spec rp_action(<<_::64, _::_*32>>, integer(), integer(), integer(), any(), any()) :: :ok
+  def rp_action(text, peer_id, firstp, secondp, token, group_id) do
     [firstp_name, firstp_gender] = person_info(firstp, token)
 
     [action, name_case] = action_case(text, firstp_gender)
